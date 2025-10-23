@@ -18,35 +18,30 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node.js
+      # 2️⃣ Setup Node.js (Vite requires Node 20+)
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 22
 
-      # 3️⃣ Install dependencies (Option 1: cd into folder)
+      # 3️⃣ Install dependencies inside vite-project
       - name: Install dependencies
         run: |
           cd vite-project
           npm install
 
-      # 4️⃣ Build the React app
+      # 4️⃣ Build the Vite app
       - name: Build Project
         run: |
           cd vite-project
           npm run build
 
-      # 5️⃣ Upload production-ready build files
-      - name: Upload production-ready build files
-        run: |
-          cd vite-project
-          npm run build  # Optional if you want to rebuild; otherwise remove
-        # Use the proper upload artifact action
+      # 5️⃣ Upload production-ready build files (dist folder for Vite)
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: production-files
-          path: React-project/build
+          path: vite-project/dist
 
   deploy:
     name: Deploy
@@ -60,11 +55,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: production-files
-          path: React-project/build
+          path: vite-project/dist
 
       # 7️⃣ Deploy to GitHub Pages
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.TOKEN }}
-          publish_dir: React-project/build
+          publish_dir: vite-project/dist
