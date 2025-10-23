@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      
+
 env:
   CI: false
 
@@ -24,18 +24,25 @@ jobs:
         with:
           node-version: 16
 
-      # 3️⃣ Install dependencies (in React subfolder)
+      # 3️⃣ Install dependencies (Option 1: cd into folder)
       - name: Install dependencies
-        run: npm install
-        working-directory: React-project
+        run: |
+          cd React-project
+          npm install
 
       # 4️⃣ Build the React app
       - name: Build Project
-        run: npm run build
-        working-directory: React-project
+        run: |
+          cd React-project
+          npm run build
 
       # 5️⃣ Upload production-ready build files
       - name: Upload production-ready build files
+        run: |
+          cd React-project
+          npm run build  # Optional if you want to rebuild; otherwise remove
+        # Use the proper upload artifact action
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: production-files
@@ -59,5 +66,5 @@ jobs:
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN }}
           publish_dir: React-project/build
