@@ -27,19 +27,19 @@ jobs:
       # 3️⃣ Install dependencies (Option 1: cd into folder)
       - name: Install dependencies
         run: |
-          cd React-project
+          cd vite-project
           npm install
 
       # 4️⃣ Build the React app
       - name: Build Project
         run: |
-          cd React-project
+          cd vite-project
           npm run build
 
       # 5️⃣ Upload production-ready build files
       - name: Upload production-ready build files
         run: |
-          cd React-project
+          cd vite-project
           npm run build  # Optional if you want to rebuild; otherwise remove
         # Use the proper upload artifact action
       - name: Upload artifact
